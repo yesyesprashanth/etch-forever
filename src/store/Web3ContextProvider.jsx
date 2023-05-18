@@ -1,8 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
 import {contractABI, COTRACT_ADDRESS, ETHERSCAN_API, POLYGONSCAN_API} from '../utils/contractData';
-import dotenv from 'dotenv';
-dotenv.config();
 const Web3Context = createContext();
 
 
