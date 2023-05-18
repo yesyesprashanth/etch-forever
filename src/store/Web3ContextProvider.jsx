@@ -1,7 +1,10 @@
 import { createContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
 import {contractABI, contractAddress} from '../utils/contractData';
+import dotenv from 'dotenv';
+dotenv.config();
 const Web3Context = createContext();
+
 
 const Web3ContextProvider = ({ children }) => {
   const [account, setAccount] = useState("");
@@ -100,20 +103,20 @@ const Web3ContextProvider = ({ children }) => {
       let response;
       if (chainId === 1) {
         // response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${process.env.COTRACT_ADDRESS}&sort=desc&apikey=${process.env.ETHERSCAN_API}`);
-        response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=0x921168AC6226b933B3020807f2602Df05e0D780E&sort=desc&apikey=ZRIYWAFGFH1PTFGFP41RUQXGKB362RKDT4`);
+        response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${import.meta.env.REACT_APP_COTRACT_ADDRESS}&sort=desc&apikey=${import.meta.env.REACT_APP_ETHERSCAN_API}`);
         console.log(chainId);
       }else if (chainId === 11155111) {
-        response = await fetch(`https://api-sepolia.etherscan.io//api?module=account&action=txlist&address=0x921168AC6226b933B3020807f2602Df05e0D780E&sort=desc&apikey=ZRIYWAFGFH1PTFGFP41RUQXGKB362RKDT4`);        
+        response = await fetch(`https://api-sepolia.etherscan.io//api?module=account&action=txlist&address=${import.meta.env.REACT_APP_COTRACT_ADDRESS}&sort=desc&apikey=${import.meta.env.REACT_APP_ETHERSCAN_API}`);        
         console.log(chainId);
       }else if (chainId === 5) {
-        response = await fetch(`https://api-goerli.etherscan.io///api?module=account&action=txlist&address=0x921168AC6226b933B3020807f2602Df05e0D780E&sort=desc&apikey=ZRIYWAFGFH1PTFGFP41RUQXGKB362RKDT4`);
+        response = await fetch(`https://api-goerli.etherscan.io///api?module=account&action=txlist&address=${import.meta.env.REACT_APP_COTRACT_ADDRESS}&sort=desc&apikey=${import.meta.env.REACT_APP_ETHERSCAN_API}`);
         console.log(chainId);
       } 
       else if (chainId === 137) {
-        response = await fetch(`https://api.polygonscan.com/api?module=account&action=txlist&address=0x921168AC6226b933B3020807f2602Df05e0D780E&sort=desc&apikey=4GMAUEQAJDU5SIRT7HZ92Q16RDKVASJP8R`);
+        response = await fetch(`https://api.polygonscan.com/api?module=account&action=txlist&address=${import.meta.env.REACT_APP_COTRACT_ADDRESS}&sort=desc&apikey=${import.meta.env.REACT_APP_POLYGONSCAN_API}`);
         console.log(chainId);        
       }else if(chainId === 80001) {
-        response = await fetch(`https://api-testnet.polygonscan.com//api?module=account&action=txlist&address=0x921168AC6226b933B3020807f2602Df05e0D780E&sort=desc&apikey=4GMAUEQAJDU5SIRT7HZ92Q16RDKVASJP8R`);        
+        response = await fetch(`https://api-testnet.polygonscan.com//api?module=account&action=txlist&address=${import.meta.env.REACT_APP_COTRACT_ADDRESS}&sort=desc&apikey=${import.meta.env.REACT_APP_POLYGONSCAN_API}`);        
         console.log(chainId);
       } else {
         console.error('Unsupported chain ID:', chainId);
