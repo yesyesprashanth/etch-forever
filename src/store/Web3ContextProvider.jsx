@@ -15,7 +15,6 @@ const Web3ContextProvider = ({ children }) => {
     const init = async () => {
       if (typeof window.ethereum !== "undefined") {
         await connectWallet();
-        console.log("connectWallet Function Called")
       }
     };
 
@@ -41,8 +40,7 @@ const Web3ContextProvider = ({ children }) => {
   };
   
   const connectWallet = async () => {
-    try {
-      console.log("CW top");
+    try {      
       const ethereum = window.ethereum;
       await ethereum.request({ method: "eth_requestAccounts" });
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -54,8 +52,6 @@ const Web3ContextProvider = ({ children }) => {
       setProvider(pv=>provider);
       const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
       setContract(pv=>contract);    
-      console.log("cw bottom");
-      // alert(account)
     } catch (err) {
       console.log(err);
     }
@@ -91,7 +87,9 @@ const Web3ContextProvider = ({ children }) => {
     for (let i = 0; i < hex.length; i += 2) {
       utf8String += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
     }
-    return decodeURIComponent(escape(utf8String));
+    // console.log(utf8String);
+    // return decodeURIComponent(escape(utf8String));
+    return utf8String;
   }
   
   const getMessages = async () => {
@@ -102,40 +100,40 @@ const Web3ContextProvider = ({ children }) => {
       if (chainId === 1) {
         // response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${process.env.COTRACT_ADDRESS}&sort=desc&apikey=${process.env.ETHERSCAN_API}`);
         response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);
-        console.log(chainId);
+        // console.log(chainId);
       }else if (chainId === 11155111) {
         response = await fetch(`https://api-sepolia.etherscan.io//api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);        
-        console.log(chainId);
+        // console.log(chainId);
       }else if (chainId === 5) {
         response = await fetch(`https://api-goerli.etherscan.io///api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);
-        console.log(chainId);
+        // console.log(chainId);
       } 
       else if (chainId === 137) {
         response = await fetch(`https://api.polygonscan.com/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${POLYGONSCAN_API}`);
-        console.log(chainId);        
+        // console.log(chainId);        
       }else if(chainId === 80001) {
         response = await fetch(`https://api-testnet.polygonscan.com//api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${POLYGONSCAN_API}`);        
-        console.log(chainId);
+        // console.log(chainId);
       } else {
         console.error('Unsupported chain ID:', chainId);
-        console.log(chainId);
+        // console.log(chainId);
         return;
       }
       const data = await response.json();    
-      console.log(data)  
+      // console.log(data)  
       const events = data.result.filter((tx => tx.input !== '0x')); //.filter((tx) => tx.from === '0xad4954f40dfaa0857095ec503f1fd9c0dbe0b2ab' && tx.input === '0x');     
       events.pop();
-      console.log("Events", events);
+      // console.log("Events", events);
       const messages = events.map((event) => {
         const timestamp = new Date(parseInt(event.timeStamp) * 1000).toLocaleString();
 
         const text = hexToUtf8(event.input.slice(74)).replace(/\0/g, '');    
         const fromAddress = event.from;
-        console.log(text.toString());
+        // console.log(text.toString());
         return { timestamp, text, fromAddress};
       });
       messages.reverse();
-      console.log("Messages", messages);
+      // console.log("Messages", messages);
       setMessages(messages);      
     } catch (error) {
       console.error(error);

@@ -9,8 +9,7 @@ const MessageList = () => {
 
   useEffect(() => {
     const fetchMessages = async () => {
-      await getMessages();     
-      console.log(messages);
+      await getMessages();          
     };
 
     fetchMessages();
