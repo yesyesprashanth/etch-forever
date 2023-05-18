@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
-import {contractABI, COTRACT_ADDRESS, ETHERSCAN_API, POLYGONSCAN_API} from '../utils/contractData';
+import {contractABI, CONTRACT_ADDRESS, ETHERSCAN_API, POLYGONSCAN_API} from '../utils/contractData';
 const Web3Context = createContext();
 
 
@@ -52,7 +52,7 @@ const Web3ContextProvider = ({ children }) => {
       const accounts = await provider.listAccounts();
       setAccount(pv=>accounts[0]);
       setProvider(pv=>provider);
-      const contract = new ethers.Contract(COTRACT_ADDRESS, contractABI, signer);
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
       setContract(pv=>contract);    
       console.log("cw bottom");
       // alert(account)
@@ -101,20 +101,20 @@ const Web3ContextProvider = ({ children }) => {
       let response;
       if (chainId === 1) {
         // response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${process.env.COTRACT_ADDRESS}&sort=desc&apikey=${process.env.ETHERSCAN_API}`);
-        response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${COTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);
+        response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);
         console.log(chainId);
       }else if (chainId === 11155111) {
-        response = await fetch(`https://api-sepolia.etherscan.io//api?module=account&action=txlist&address=${COTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);        
+        response = await fetch(`https://api-sepolia.etherscan.io//api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);        
         console.log(chainId);
       }else if (chainId === 5) {
-        response = await fetch(`https://api-goerli.etherscan.io///api?module=account&action=txlist&address=${COTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);
+        response = await fetch(`https://api-goerli.etherscan.io///api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);
         console.log(chainId);
       } 
       else if (chainId === 137) {
-        response = await fetch(`https://api.polygonscan.com/api?module=account&action=txlist&address=${COTRACT_ADDRESS}&sort=desc&apikey=${POLYGONSCAN_API}`);
+        response = await fetch(`https://api.polygonscan.com/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${POLYGONSCAN_API}`);
         console.log(chainId);        
       }else if(chainId === 80001) {
-        response = await fetch(`https://api-testnet.polygonscan.com//api?module=account&action=txlist&address=${COTRACT_ADDRESS}&sort=desc&apikey=${POLYGONSCAN_API}`);        
+        response = await fetch(`https://api-testnet.polygonscan.com//api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${POLYGONSCAN_API}`);        
         console.log(chainId);
       } else {
         console.error('Unsupported chain ID:', chainId);
