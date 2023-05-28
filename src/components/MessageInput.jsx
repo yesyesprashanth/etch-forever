@@ -5,12 +5,15 @@ import styles from './MessageInput.module.css';
 
 function MessageInput() {
   const { account, saveMessage } = useContext(Web3Context);
+  const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
   const handleSaveMessage = async () => {
     if (!message) return;
+    setSaving(true);
     await saveMessage(message);
     setMessage('');
+    setSaving(false);
   };
 
   return (
@@ -22,7 +25,8 @@ function MessageInput() {
         onChange={(e) => setMessage(e.target.value)}
       />
       <button className={styles.button} onClick={handleSaveMessage}>
-        Save <span className={styles.arrow}>&#10148;</span>
+        {saving?'Saving...' : 'Save'} 
+        <span className={styles.arrow}>&#10148;</span>
       </button>
     </div>
   );

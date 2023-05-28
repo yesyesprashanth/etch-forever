@@ -67,14 +67,6 @@ const Web3ContextProvider = ({ children }) => {
     }
   };
   
-  const getMessage = async () => {
-    try {
-      const message =  "Message List";
-      return message;
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const removeDataPrefix = (inputString) => {
     return inputString.replace(/^0x([0-9a-fA-F]*)$/, '$1');
@@ -97,8 +89,7 @@ const Web3ContextProvider = ({ children }) => {
       
       const chainId = parseInt(ethereum.chainId)       
       let response;
-      if (chainId === 1) {
-        // response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${process.env.COTRACT_ADDRESS}&sort=desc&apikey=${process.env.ETHERSCAN_API}`);
+      if (chainId === 1) {        
         response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${CONTRACT_ADDRESS}&sort=desc&apikey=${ETHERSCAN_API}`);
         // console.log(chainId);
       }else if (chainId === 11155111) {
@@ -124,14 +115,14 @@ const Web3ContextProvider = ({ children }) => {
       const events = data.result.filter((tx => tx.input !== '0x')); //.filter((tx) => tx.from === '0xad4954f40dfaa0857095ec503f1fd9c0dbe0b2ab' && tx.input === '0x');     
       events.pop();
       // console.log("Events", events);
-      const messages = events.map((event) => {
-        const timestamp = new Date(parseInt(event.timeStamp) * 1000).toLocaleString();
+          const messages = events.map((event) => {
+            const timestamp = new Date(parseInt(event.timeStamp) * 1000).toLocaleString();
 
-        const text = hexToUtf8(event.input.slice(74)).replace(/\0/g, '');    
-        const fromAddress = event.from;
-        // console.log(text.toString());
-        return { timestamp, text, fromAddress};
-      });
+            const text = hexToUtf8(event.input.slice(74)).replace(/\0/g, '');    
+            const fromAddress = event.from;
+            // console.log(text.toString());
+            return { timestamp, text, fromAddress};
+          });
       messages.reverse();
       // console.log("Messages", messages);
       setMessages(messages);      
