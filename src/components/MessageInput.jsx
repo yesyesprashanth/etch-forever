@@ -4,7 +4,7 @@ import { Web3Context } from '../store/Web3ContextProvider';
 import styles from './MessageInput.module.css';
 
 function MessageInput() {
-  const { account, saveMessage } = useContext(Web3Context);
+  const { account, saveMessage, getMessages } = useContext(Web3Context);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -13,6 +13,8 @@ function MessageInput() {
     setSaving(true);
     await saveMessage(message);
     setMessage('');
+    await getMessages();
+    alert("Please refresh, If the message does not get displayed on the message list");
     setSaving(false);
   };
 

@@ -16,6 +16,10 @@ const Web3ContextProvider = ({ children }) => {
       if (typeof window.ethereum !== "undefined") {
         await connectWallet();
       }
+      else 
+      {
+        alert("No wallet found, Please install metamask");
+      }
     };
 
     init();
@@ -59,14 +63,16 @@ const Web3ContextProvider = ({ children }) => {
   
   const saveMessage = async (message) => {
     try {
+      console.log("Tx Started");
       const tx = await contract.setMessage(message);
       await tx.wait();
+      console.log("Tx Complete")
       await getMessages();
+      console.log("Get message called");
     } catch (err) {
       console.log(err);
     }
   };
-  
 
   const removeDataPrefix = (inputString) => {
     return inputString.replace(/^0x([0-9a-fA-F]*)$/, '$1');
@@ -85,8 +91,7 @@ const Web3ContextProvider = ({ children }) => {
   }
   
   const getMessages = async () => {
-    try {     
-      
+    try {    
       const chainId = parseInt(ethereum.chainId)       
       let response;
       if (chainId === 1) {        
@@ -126,6 +131,7 @@ const Web3ContextProvider = ({ children }) => {
       messages.reverse();
       // console.log("Messages", messages);
       setMessages(messages);      
+      console.log("Message Set");
     } catch (error) {
       console.error(error);
     }
